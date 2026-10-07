@@ -1,15 +1,31 @@
-# SmartMeal
+# SmartMeal — Mieux comprendre son assiette, une photo à la fois
 
-SmartMeal est une application web de démonstration qui analyse une photo de repas et affiche des informations nutritionnelles indicatives. Elle combine une interface React, une API Spring Boot et un service Python pour l’analyse d’images.
+SmartMeal transforme une photo de repas en un aperçu simple des aliments détectés et de leurs repères nutritionnels. L’application réunit l’analyse d’image, un score de lecture rapide, un historique personnel et des suggestions pour aider chacun à explorer ses choix alimentaires.
 
-## Fonctionnalités
+Le projet vise à rendre l’information nutritionnelle plus accessible au quotidien : comprendre plus facilement ce qui se trouve dans son assiette, retrouver ses analyses et s’appuyer sur des repères clairs pour faire des choix plus éclairés. Cet impact est un objectif du produit, pas une mesure clinique ou une étude d’efficacité.
 
-- Création de compte et connexion.
-- Analyse d’images JPEG ou PNG (20 Mo maximum) avec détection de régions et classification Food-101.
-- Consultation de l’historique des analyses et de détails nutritionnels.
-- Suggestions de repas à partir des résultats disponibles dans le projet.
+## Ce que SmartMeal permet de faire
 
-Les prédictions et estimations peuvent être inexactes. SmartMeal ne remplace pas un avis médical ou diététique.
+- **Analyser une assiette en quelques étapes :** créer un compte, importer une photo JPEG ou PNG (20 Mo maximum) et obtenir un aperçu des aliments reconnus.
+- **Repérer les aliments avec l’IA :** YOLOv8 localise des régions de l’image, puis un modèle ResNet-18 les classe parmi les 101 catégories de Food-101.
+- **Lire les repères nutritionnels :** consulter les estimations disponibles pour les calories, protéines, glucides, lipides, fibres, sodium et sucres.
+- **Comprendre le résultat d’un coup d’œil :** voir un score indicatif sur 100 et une lettre de A à E, calculés à partir de quelques seuils nutritionnels.
+- **Garder le fil de ses analyses :** retrouver les repas enregistrés dans son compte, consulter leurs détails et parcourir les analyses récentes depuis le tableau de bord.
+- **Découvrir des idées de repas :** explorer des suggestions calculées à partir des données de recommandation fournies avec le projet.
+
+## L’impact visé
+
+SmartMeal réduit la distance entre une photo et une information utile : il rassemble dans une même expérience la reconnaissance des aliments, des repères nutritionnels lisibles et la possibilité de revenir sur ses repas. L’historique aide à garder une trace de ses analyses, tandis que les suggestions ouvrent des pistes pour varier ses choix. L’application est conçue comme un outil de découverte et de sensibilisation, pas comme un régime ou un suivi médical.
+
+## Parcours utilisateur
+
+1. L’utilisateur crée un compte ou se connecte.
+2. Il choisit une photo nette de son repas et lance l’analyse.
+3. SmartMeal détecte les régions pertinentes et propose les aliments les plus probables.
+4. L’application associe les données nutritionnelles disponibles, calcule un score indicatif et enregistre l’analyse.
+5. L’utilisateur consulte le résultat, le retrouve dans son historique et peut explorer les suggestions associées.
+
+Les résultats dépendent de la photo et des aliments couverts par Food-101. Les valeurs nutritionnelles sont des repères par 100 g, sans estimation du poids des portions. Le score est une heuristique logicielle ; SmartMeal ne remplace pas un avis médical ou diététique.
 
 ## Technologies
 
@@ -18,6 +34,30 @@ Les prédictions et estimations peuvent être inexactes. SmartMeal ne remplace p
 - **Données :** PostgreSQL et Redis.
 - **Analyse d’images :** Python, FastAPI, PyTorch et YOLOv8.
 - **Lancement local :** Docker Compose.
+
+## Architecture
+
+SmartMeal sépare l’interface, la logique applicative et l’inférence des modèles. Le navigateur échange avec l’API Spring Boot, qui gère les comptes et les analyses, enregistre les données et appelle le service ML lorsque nécessaire.
+
+```mermaid
+flowchart LR
+    U[Utilisateur] --> B[Navigateur]
+    B --> FE[Frontend React / Vite]
+    FE -->|API REST| API[API Spring Boot]
+    API --> DB[(PostgreSQL)]
+    API --> R[(Redis)]
+    API --> IMG[(Stockage des images)]
+    API -->|Images et demandes| ML[Service FastAPI]
+    ML --> Y[YOLOv8<br/>Détection de régions]
+    ML --> C[ResNet-18<br/>Classification Food-101]
+    ML --> RL[(Données de recommandation)]
+```
+
+- **Frontend React :** permet de créer un compte, envoyer une image et consulter les résultats, le tableau de bord et l’historique.
+- **API Spring Boot :** orchestre les analyses, l’authentification, les données de repas et les repères nutritionnels.
+- **Service FastAPI :** exécute les modèles d’image et produit les suggestions à partir des données de recommandation du projet.
+- **PostgreSQL et Redis :** stockent les données applicatives et prennent en charge les besoins temporaires de session et de traitement.
+- **Stockage des images :** conserve les fichiers reçus par l’API dans un volume Docker local.
 
 ## Structure
 
