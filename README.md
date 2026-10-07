@@ -181,6 +181,3 @@ Le jeu d’images Food-101 n’est pas fourni dans ce dépôt. Plusieurs noteboo
 - L’écran Profil affiche les informations disponibles dans la session ; l’API n’a pas actuellement de route permettant de modifier ou de consulter un profil complet.
 - Le service backend conserve les fichiers d’image dans son répertoire `uploads` (monté dans un volume Docker) et le frontend peut en garder une copie locale pour l’affichage. La suppression d’un enregistrement de repas ne supprime pas nécessairement le fichier image correspondant.
 
-## Prototype Streamlit historique
-
-`src/app.py` contient une interface Streamlit antérieure à l’architecture web actuelle. Elle n’est pas démarrée par Docker Compose et lit des fichiers à des emplacements absolus `C:/SmartMeal/...` ainsi que des tables CSV qui ne sont pas incluses ici. Pour cette raison, le parcours documenté et maintenu dans ce README est celui du frontend React et des services Spring Boot/FastAPI.
