@@ -1,0 +1,64 @@
+services:
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: smeal_db
+      POSTGRES_USER: smeal_user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in your environment or .env file}
+    ports:
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smeal_user -d smeal_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6380:6379"
+
+  ml-api:
+    build:
+      context: ..
+      dockerfile: smeal-backend/ml-service/Dockerfile
+    ports:
+      - "127.0.0.1:5000:5000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=2)"
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 20
+      start_period: 60s
+
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/smeal_db
+      DATABASE_USERNAME: smeal_user
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET}
+      ML_API_URL: http://ml-api:5000
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      ml-api:
+        condition: service_healthy
+    volumes:
+      - meal_uploads:/app/uploads
+
+volumes:
+  meal_uploads:

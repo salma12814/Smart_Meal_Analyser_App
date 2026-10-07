@@ -1,0 +1,1 @@
+package com.smeal.dto; import jakarta.validation.constraints.*; public record AuthRequestDTO(@Email @NotBlank @Size(max=320) String email,@NotBlank @Size(min=8,max=100) String password,@Size(max=120) String name){}

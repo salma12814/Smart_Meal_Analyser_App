@@ -1,0 +1,3 @@
+package com.smeal.security;
+import com.smeal.repository.UserRepository; import java.util.List; import org.springframework.security.core.userdetails.*; import org.springframework.stereotype.Service;
+@Service public class CustomUserDetailsService implements UserDetailsService {private final UserRepository users;public CustomUserDetailsService(UserRepository users){this.users=users;}public UserDetails loadUserByUsername(String email){var u=users.findByEmailIgnoreCase(email).orElseThrow(()->new UsernameNotFoundException("User not found"));return new org.springframework.security.core.userdetails.User(u.getEmail(),u.getPasswordHash(),List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_"+u.getRole())));}}

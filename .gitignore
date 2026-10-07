@@ -1,0 +1,17 @@
+# Machine Learning models
+*.pth
+*.pt
+*.h5
+*.onnx
+*.pkl
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/dist/
+
+# Environment variables
+.env

@@ -1,0 +1,1 @@
+package com.smeal.repository; import com.smeal.entity.MealFood; import java.util.UUID; import org.springframework.data.jpa.repository.JpaRepository; public interface MealFoodRepository extends JpaRepository<MealFood,UUID>{}

@@ -1,0 +1,1 @@
+package com.smeal.dto; import java.time.LocalDateTime; import java.util.*; public record MealAnalysisDTO(UUID mealId,UUID userId,List<FoodPredictionDTO> detectedFoods,Map<String,Double> nutritionData,HealthScoreDTO healthScore,List<RecommendationDTO> recommendations,LocalDateTime timestamp){}

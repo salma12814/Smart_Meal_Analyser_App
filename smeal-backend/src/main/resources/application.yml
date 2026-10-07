@@ -1,0 +1,64 @@
+spring:
+  config:
+    import: optional:file:../.env[.properties]
+
+  application:
+    name: smeal-backend
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/smeal_db}
+    username: ${DATABASE_USERNAME:smeal_user}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  sql:
+    init:
+      mode: always
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 60s
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+server:
+  port: ${PORT:8082}
+  servlet:
+    context-path: /api
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 86400000
+  refresh-expiration-ms: 604800000
+
+ml:
+  api:
+    url: ${ML_API_URL:http://localhost:5000}
+    detect-endpoint: /predict/detect
+    classify-endpoint: /predict/classify
+    recommend-endpoint: /recommend
+    timeout-seconds: 30
+
+file:
+  upload:
+    storage-path: ${UPLOAD_PATH:./uploads}
+    max-size: 20971520
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+.idea
+.venv
+venv
+__pycache__
+notebooks
+reports
+data
+smeal-backend/target
+smeal-backend/uploads

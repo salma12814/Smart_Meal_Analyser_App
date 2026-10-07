@@ -1,0 +1,1 @@
+package com.smeal.repository; import com.smeal.entity.NutritionData; import java.util.*; import org.springframework.data.jpa.repository.JpaRepository; public interface NutritionRepository extends JpaRepository<NutritionData,UUID>{Optional<NutritionData> findByFoodNameIgnoreCase(String name); List<NutritionData> findByFoodNameContainingIgnoreCase(String name);}

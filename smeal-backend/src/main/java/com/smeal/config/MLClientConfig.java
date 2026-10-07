@@ -1,0 +1,3 @@
+package com.smeal.config;
+import org.springframework.beans.factory.annotation.Value; import org.springframework.context.annotation.*; import org.springframework.http.client.SimpleClientHttpRequestFactory; import org.springframework.web.client.RestTemplate;
+@Configuration public class MLClientConfig {@Bean RestTemplate mlRestTemplate(@Value("${ml.api.timeout-seconds}")int timeout){int millis=Math.multiplyExact(timeout,1000);SimpleClientHttpRequestFactory factory=new SimpleClientHttpRequestFactory();factory.setConnectTimeout(millis);factory.setReadTimeout(millis);return new RestTemplate(factory);}}

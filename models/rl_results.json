@@ -1,0 +1,16 @@
+{
+  "n_episodes": 2000,
+  "final_epsilon": 0.05,
+  "avg_reward_final_200": 61.92,
+  "avg_score_final_200": 69.5,
+  "best_meals_count": 1658,
+  "best_meal": {
+    "meal": [
+      "grilled_salmon",
+      "steak",
+      "hamburger"
+    ],
+    "avg_score": 74.0,
+    "total_reward": -12.8
+  }
+}

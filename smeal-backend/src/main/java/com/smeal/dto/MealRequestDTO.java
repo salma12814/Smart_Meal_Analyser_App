@@ -1,0 +1,1 @@
+package com.smeal.dto; import jakarta.validation.constraints.*; import java.util.List; public record MealRequestDTO(@NotEmpty @Size(max=101) List<@NotBlank @Size(max=200) String> selectedFoods,@Min(1) @Max(50) Integer maxSuggestions){}
