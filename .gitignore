@@ -1,3 +1,7 @@
+# Maven
+**/target/
+*.jar
+
 # Machine Learning models
 *.pth
 *.pt
@@ -5,13 +9,13 @@
 *.onnx
 *.pkl
 
-# Python
-__pycache__/
-*.pyc
-
 # Node
 node_modules/
 frontend/dist/
 
-# Environment variables
+# Python
+__pycache__/
+*.pyc
+
+# Environment
 .env
